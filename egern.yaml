@@ -71,7 +71,9 @@ policy_groups:
     name: AllServer
     type: select
     urls:
-    - https://your-subscription-url
+  - https://cat.cn-ping.com/sabusuku?token=2de23f880e57f679991fcd85682e6e37
+  - https://43.139.248.121:9000/hxyunvip?token=2d295cb5cac82fe40540c1f3a2f283c0
+  - https://edge.180053.xyz/sub?token=5edfa94e1e51b3bcbe75f8b29187a90c
     filter: '^((?!Remain|Expired|官网|如需|套餐|去除|剩余|距离|Reset|重置|流量).)+$'
     update_interval: 86400
     icon: https://raw.githubusercontent.com/lige47/QuanX-icon-rule/main/icon/05icon/rocket(1).png
