@@ -3,8 +3,8 @@ vif_only: true
 hide_vpn_icon: false
 hijack_dns:
 - '*:53'
-geoip_db_url: https://ghproxy.net/https://raw.githubusercontent.com/Masaiki/GeoIP2-CN/release/Country.mmdb
-asn_db_url: https://ghproxy.net/https://raw.githubusercontent.com/P3TERX/GeoLite.mmdb/download/GeoLite2-ASN.mmdb
+geoip_db_url: https://raw.githubusercontent.com/Masaiki/GeoIP2-CN/release/Country.mmdb
+asn_db_url: https://raw.githubusercontent.com/P3TERX/GeoLite.mmdb/download/GeoLite2-ASN.mmdb
 direct_latency_test_url: http://wifi.vivo.com.cn/generate_204
 compat_route: false
 dns:
@@ -39,25 +39,25 @@ dns:
     - https://cloudflare-dns.com/dns-query
   forward:
   - proxy_rule_set:
-      match: https://ghproxy.net/https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/ruleset/reject.txt
+      match: https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/ruleset/reject.txt
       value: AdBlack
   - proxy_rule_set:
-      match: https://ghproxy.net/https://rule.kelee.one/Loon/Alibaba.lsr
+      match: https://rule.kelee.one/Loon/Alibaba.lsr
       value: Alibaba
   - proxy_rule_set:
-      match: https://ghproxy.net/https://rule.kelee.one/Loon/Tencent.lsr
+      match: https://rule.kelee.one/Loon/Tencent.lsr
       value: Tencent
   - proxy_rule_set:
-      match: https://ghproxy.net/https://rule.kelee.one/Loon/DouYin.lsr
+      match: https://rule.kelee.one/Loon/DouYin.lsr
       value: ByteDance
   - proxy_rule_set:
-      match: https://ghproxy.net/https://rule.kelee.one/Loon/Apple.lsr
+      match: https://rule.kelee.one/Loon/Apple.lsr
       value: China
   - proxy_rule_set:
-      match: https://ghproxy.net/https://rule.kelee.one/Loon/ChinaMax.lsr
+      match: https://rule.kelee.one/Loon/ChinaMax.lsr
       value: China
   - proxy_rule_set:
-      match: https://ghproxy.net/https://rule.kelee.one/Loon/Global.lsr
+      match: https://rule.kelee.one/Loon/Global.lsr
       value: Global
   - domain_wildcard:
       match: '*'
@@ -71,8 +71,8 @@ policy_groups:
     name: AllServer
     type: select
     urls:
-  - https://your-subscription-url
-    filter: '^((?!Remain|Expired|闁诲氦顫夐…鍥╃礊婢у﹤鈹戦垾鍐测偓鍨€掔粔銉モ攽閸屾侗娈滄い锔绢殲闂佸憡锚椤嘲鈻嶅顏堟煕閹绢垱娅冪紓宥嗗晪闁荤姷鍎ょ换鍕€栭崳鐑篹set|闂備焦褰冪粔鍫曟偪閸炩剝绻涚紙鐘电獢闁?.)+$'
+    - https://your-subscription-url
+    filter: '^((?!Remain|Expired|瀹樼綉|濡傞渶|濂楅|鍘婚櫎|鍓╀綑|璺濈|Reset|閲嶇疆|娴侀噺).)+$'
     update_interval: 86400
     icon: https://raw.githubusercontent.com/lige47/QuanX-icon-rule/main/icon/05icon/rocket(1).png
     hidden: false
@@ -81,7 +81,7 @@ policy_groups:
     policies:
     - AllServer
     flatten: true
-    filter: '濡絽鍟▓鑸碉純閸愩劍顔憒HK|婵☆偓绲鹃悷锕傛嚈閹èong\s*Kong|HongKong|HKG|MO'
+    filter: '馃嚟馃嚢|HK|棣欐腐|Hong\s*Kong|HongKong|HKG|MO'
     update_interval: 86400
     icon: https://raw.githubusercontent.com/lige47/QuanX-icon-rule/main/icon/01Country/Hongkong(3).png
     hidden: false
@@ -90,7 +90,7 @@ policy_groups:
     policies:
     - AllServer
     flatten: true
-    filter: '濡絽鍟В鍫燂純閸愩劍鐦瀨TW|闂佸憡鐟ф晶妤呭椽閺呮€瞐iwan|Tai|TWN'
+    filter: '馃嚬馃嚰|TW|鍙版咕|Taiwan|Tai|TWN'
     update_interval: 86400
     icon: https://raw.githubusercontent.com/lige47/QuanX-icon-rule/main/icon/01Country/taiwan(4).png
     hidden: false
@@ -99,7 +99,7 @@ policy_groups:
     policies:
     - AllServer
     flatten: true
-    filter: '濡絽鍟▓瑙勶純閸愩劍鐦峾JP|闂佸搫鍟ㄩ崕鎻掞耿閻ㄦクapan|JPN'
+    filter: '馃嚡馃嚨|JP|鏃ユ湰|Japan|JPN'
     update_interval: 86400
     icon: https://raw.githubusercontent.com/lige47/QuanX-icon-rule/main/icon/01Country/Japan(2).png
     hidden: false
@@ -108,7 +108,7 @@ policy_groups:
     policies:
     - AllServer
     flatten: true
-    filter: '濡絽鍟В鍥純閸愩劍顔墊SG|闂佸搫鍊瑰妯绘叏閻愬搫閿ゆい銏犲€块幃顏堫敊閼测晛甯瀨Singapore|SGP|MA'
+    filter: '馃嚫馃嚞|SG|鏂板姞鍧鐙煄|Singapore|SGP|MA'
     update_interval: 86400
     icon: https://raw.githubusercontent.com/lige47/QuanX-icon-rule/main/icon/01Country/singapore.png
     hidden: false
@@ -117,7 +117,7 @@ policy_groups:
     policies:
     - AllServer
     flatten: true
-    filter: '濡絽鍟В澶嬶純閸愩劍鐦抾US|缂傚倸娲ゆ绋棵瑰绂猲ited\s*States|USA|States|American'
+    filter: '馃嚭馃嚫|US|缇庡浗|United\s*States|USA|States|American'
     update_interval: 86400
     icon: https://raw.githubusercontent.com/lige47/QuanX-icon-rule/main/icon/01Country/US(2).png
     hidden: false
@@ -254,19 +254,19 @@ policy_groups:
     hidden: false
 rules:
 - rule_set:
-    match: https://ghproxy.net/https://raw.githubusercontent.com/zxfccmm4/Profiles/main/Surge/Ruleset/Unbreak.list
+    match: https://raw.githubusercontent.com/zxfccmm4/Profiles/refs/heads/main/Surge/Ruleset/Unbreak.list
     policy: DIRECT
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/domainset/reject.conf
+    match: https://ruleset.skk.moe/List/domainset/reject.conf
     policy: REJECT
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/non_ip/reject-drop.conf
+    match: https://ruleset.skk.moe/List/non_ip/reject-drop.conf
     policy: REJECT
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/non_ip/reject.conf
+    match: https://ruleset.skk.moe/List/non_ip/reject.conf
     policy: REJECT
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/ip/reject.conf
+    match: https://ruleset.skk.moe/List/ip/reject.conf
     policy: REJECT
 - domain:
     match: prpr.96110.cn.com
@@ -278,37 +278,37 @@ rules:
     match: gjfzpt.cn
     policy: REJECT
 - rule_set:
-    match: https://ghproxy.net/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/WeChat/WeChat.list
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/WeChat/WeChat.list
     policy: WeChat
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/non_ip/neteasemusic.conf
+    match: https://ruleset.skk.moe/List/non_ip/neteasemusic.conf
     policy: Mainland
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/ip/neteasemusic.conf
+    match: https://ruleset.skk.moe/List/ip/neteasemusic.conf
     policy: Mainland
 - rule_set:
-    match: https://ghproxy.net/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/BiliBili/BiliBili.list
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/BiliBili/BiliBili.list
     policy: Bilibili
 - rule_set:
-    match: https://ghproxy.net/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Weibo/Weibo.list
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Weibo/Weibo.list
     policy: Mainland
 - rule_set:
-    match: https://ghproxy.net/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/XiaoHongShu/XiaoHongShu.list
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/XiaoHongShu/XiaoHongShu.list
     policy: Mainland
 - rule_set:
-    match: https://ghproxy.net/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/AppStore/AppStore.list
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/AppStore/AppStore.list
     policy: DIRECT
 - rule_set:
-    match: https://ghproxy.net/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/AppleNews/AppleNews.list
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/AppleNews/AppleNews.list
     policy: United States
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/domainset/apple_cdn.conf
+    match: https://ruleset.skk.moe/List/domainset/apple_cdn.conf
     policy: Apple
 - rule_set:
-    match: https://ghproxy.net/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/AppleTV/AppleTV.list
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/AppleTV/AppleTV.list
     policy: Apple
 - rule_set:
-    match: https://ghproxy.net/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Apple/Apple.list
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Apple/Apple.list
     policy: Apple
 - domain_keyword:
     match: diabrowser.engineering
@@ -326,67 +326,67 @@ rules:
     match: googleapis.com
     policy: AI
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/non_ip/ai.conf
+    match: https://ruleset.skk.moe/List/non_ip/ai.conf
     policy: AI
 - rule_set:
-    match: https://ghproxy.net/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Bing/Bing.list
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Bing/Bing.list
     policy: AI
 - rule_set:
-    match: https://ghproxy.net/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/YouTube/YouTube.list
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/YouTube/YouTube.list
     policy: YouTube
 - rule_set:
-    match: https://ghproxy.net/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/GoogleSearch/GoogleSearch.list
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/GoogleSearch/GoogleSearch.list
     policy: YouTube
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/non_ip/stream_us.conf
+    match: https://ruleset.skk.moe/List/non_ip/stream_us.conf
     policy: United States
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/ip/stream_us.conf
+    match: https://ruleset.skk.moe/List/ip/stream_us.conf
     policy: United States
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/non_ip/stream_jp.conf
+    match: https://ruleset.skk.moe/List/non_ip/stream_jp.conf
     policy: Japan
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/ip/stream_jp.conf
+    match: https://ruleset.skk.moe/List/ip/stream_jp.conf
     policy: Japan
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/non_ip/stream_hk.conf
+    match: https://ruleset.skk.moe/List/non_ip/stream_hk.conf
     policy: Hong Kong
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/ip/stream_hk.conf
+    match: https://ruleset.skk.moe/List/ip/stream_hk.conf
     policy: Hong Kong
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/non_ip/stream_tw.conf
+    match: https://ruleset.skk.moe/List/non_ip/stream_tw.conf
     policy: Taiwan
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/ip/stream_tw.conf
+    match: https://ruleset.skk.moe/List/ip/stream_tw.conf
     policy: Taiwan
 - rule_set:
-    match: https://ghproxy.net/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Twitter/Twitter.list
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Twitter/Twitter.list
     policy: X
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/non_ip/telegram.conf
+    match: https://ruleset.skk.moe/List/non_ip/telegram.conf
     policy: Telegram
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/ip/telegram.conf
+    match: https://ruleset.skk.moe/List/ip/telegram.conf
     policy: Telegram
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/ip/telegram_asn.conf
+    match: https://ruleset.skk.moe/List/ip/telegram_asn.conf
     policy: Telegram
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/non_ip/microsoft.conf
+    match: https://ruleset.skk.moe/List/non_ip/microsoft.conf
     policy: Microsoft
 - rule_set:
-    match: https://ghproxy.net/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/GitHub/GitHub.list
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/GitHub/GitHub.list
     policy: Automatic
 - rule_set:
-    match: https://ghproxy.net/https://raw.githubusercontent.com/getsomecat/GetSomeCats/Surge/rule/substore.list
+    match: https://raw.githubusercontent.com/getsomecat/GetSomeCats/Surge/rule/substore.list
     policy: Automatic
 - domain_suffix:
     match: vercel.app
     policy: Automatic
 - rule_set:
-    match: https://ghproxy.net/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Speedtest/Speedtest.list
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Speedtest/Speedtest.list
     policy: Speedtest
 - domain_suffix:
     match: cloudflare.com
@@ -395,34 +395,34 @@ rules:
     match: jable.tv
     policy: Automatic
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/non_ip/direct.conf
+    match: https://ruleset.skk.moe/List/non_ip/direct.conf
     policy: Mainland
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/non_ip/domestic.conf
+    match: https://ruleset.skk.moe/List/non_ip/domestic.conf
     policy: Mainland
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/ip/domestic.conf
+    match: https://ruleset.skk.moe/List/ip/domestic.conf
     policy: Mainland
 - rule_set:
-    match: https://ghproxy.net/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/ChinaMax/ChinaMax.list
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/ChinaMax/ChinaMax.list
     policy: Mainland
 - rule_set:
-    match: https://ghproxy.net/https://raw.githubusercontent.com/VirgilClyne/GetSomeFries/main/ruleset/ASN.China.list
+    match: https://raw.githubusercontent.com/VirgilClyne/GetSomeFries/main/ruleset/ASN.China.list
     policy: DIRECT
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/domainset/download.conf
+    match: https://ruleset.skk.moe/List/domainset/download.conf
     policy: Mainland
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/non_ip/download.conf
+    match: https://ruleset.skk.moe/List/non_ip/download.conf
     policy: Mainland
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/non_ip/global_plus.conf
+    match: https://ruleset.skk.moe/List/non_ip/global_plus.conf
     policy: Automatic
 - domain_suffix:
     match: googlevideo.com
     policy: YouTube
 - rule_set:
-    match: https://ghproxy.net/https://ruleset.skk.moe/List/non_ip/lan.conf
+    match: https://ruleset.skk.moe/List/non_ip/lan.conf
     policy: DIRECT
 - domain_suffix:
     match: cn
