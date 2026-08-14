@@ -97,11 +97,11 @@ function tryParse(s) {
    validateAudioAuth 响应: data{power,audioStatus,isLoginPower,expireTime} */
 function patchAuth(data) {
   const d = data.data;
-  if (!d || typeof d !== 'object') return;
+  if (!d || typeof d !== 'object') { try { console.log('[CAIXIN-UNLOCK] no data', JSON.stringify(data).slice(0, 200)); } catch (e) {} return; }
   // 结构1: {data:{info:{errorCode,power}}}
   if (d.info && typeof d.info === 'object') {
     if (d.info.errorCode !== undefined) d.info.errorCode = 0;
-    if (d.info.power !== undefined) d.info.power = 1;
+    if (d.info.power !== undefined) { d.info.power = 1; try { console.log('[CAIXIN-UNLOCK] patched power 0->1'); } catch (e) {} }
   }
   // 结构2: {data:{power,audioStatus,isLoginPower,expireTime}} (AudioAuthInfo)
   if (d.power !== undefined) {

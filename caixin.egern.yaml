@@ -12,6 +12,7 @@ scriptings:
         ^https?:\/\/(gateway\.caixin\.com\/api\/(app-api\/auth\/(newValidate|validate|validateAudioAuth)|purchase\/user\/getUserPowerArticlesV2)|mapiv5\.caixin\.com\/android\/user\/get_user_power|mappsv5\.caixin\.com\/articlev5\/.*\.html)
       body_required: true
       debug: true
+      update_interval: 60
       timeout: 10
 
   - http_response:
@@ -22,6 +23,7 @@ scriptings:
         ^https?:\/\/ipadcms\.caixin\.com\/(api|tmp|power)\/(articles?|myfree(v\d+)?)
       body_required: true
       debug: true
+      update_interval: 60
       timeout: 10
 
 mitm:
