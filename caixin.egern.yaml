@@ -36,10 +36,9 @@ scriptings:
 
 mitm:
   hostnames:
-    includes:
-      - gateway.caixin.com
-      - mapiv5.caixin.com
-      - mappsv5.caixin.com
+    - gateway.caixin.com
+    - mapiv5.caixin.com
+    - mappsv5.caixin.com
 
 http_captures:
   - gateway.caixin.com
