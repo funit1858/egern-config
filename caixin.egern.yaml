@@ -1,34 +1,26 @@
 name: 财新解锁
-description: 财新 App 会员/正文解锁。v8 方案：articlev5 页面注入 JS 调用明文 checkUserAndLoginRead 接口获取全文。只改响应不改请求。仅供学习交流。
+description: 财新 App 会员/正文解锁。v8 方案：articlev5 页面注入 JS 调用明文 checkUserAndLoginRead 接口获取全文。只改目标接口，不干扰统计上报。仅供学习交流。
 author: funit1858
 homepage: https://github.com/funit1858/egern-config
 
 body_rewrites:
   - response_regex:
-      match: mappsv5\.caixin\.com
+      match: mappsv5\.caixin\.com/articlev5
       find: '<title>'
       replace: '<title>[UNLOCKED] '
   - response_regex:
-      match: gateway\.caixin\.com
+      match: gateway\.caixin\.com/api/app-api/auth
       find: '"power":0'
       replace: '"power":1'
   - response_regex:
-      match: gateway\.caixin\.com
+      match: gateway\.caixin\.com/api/app-api/auth
       find: '"errorCode":7'
       replace: '"errorCode":0'
-  - response_regex:
-      match: mappsv5\.caixin\.com
-      find: '"isFree":1'
-      replace: '"isFree":0'
-  - response_regex:
-      match: mappsv5\.caixin\.com
-      find: '"need_login":1'
-      replace: '"need_login":0'
 
 scriptings:
   - http_response:
       name: 财新解锁
-      match: (gateway|mappsv5|mapiv5)\.caixin\.com
+      match: mappsv5\.caixin\.com/articlev5|gateway\.caixin\.com/api/app-api
       script_url: https://raw.githubusercontent.com/funit1858/egern-config/main/scripts/caixin.egern.js
       body_required: true
       update_interval: 60
