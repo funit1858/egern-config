@@ -76,8 +76,6 @@ export default async function (ctx) {
     if (/mappsv5\.caixin\.com\/articlev5\//.test(url)) {
       return {
         body: text
-          .replace(/<title>([^<]*)<\/title>/, '<title>[UNLOCKED] $1</title>')
-          .replace(/<title>([^<]*)<\/title>/, '<title>[UNLOCKED] $1</title>')
           .replace(/"isFree"\s*:\s*"?1"?(?![0-9])/g, '"isFree":0')
           .replace(/isFree\s*:\s*1(?![0-9])/g, 'isFree:0')
           .replace(/isFree\s*=\s*["']1["']/g, 'isFree="0"')
