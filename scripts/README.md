@@ -77,3 +77,12 @@ hostname = api.banxueketang.com
 ## 免责声明
 
 仅供学习交流，请于下载后 24 小时内删除，禁止商用传播。
+
+## 财新解锁（2026-08-14 新增）
+
+| 文件 | 说明 |
+|---|---|
+| `caixin.egern.js` | 财新 App 会员/正文解锁（newValidate/validate/validateAudioAuth/getUserPowerArticlesV2/get_user_power + articlev5 HTML） |
+| `caixin-weekly.egern.js` | 独立财新周刊 App（ipadcms）——老 CMS 接口已实测空响应，保留兼容 |
+
+原理：正文权限由 `POST /api/app-api/auth/newValidate` 返回 `data.info.power` 决定（`power>0` 展开全文），正文以汉字隐写随页面下发。脚本只改响应 `power:0→1`，不改请求。

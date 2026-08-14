@@ -1,0 +1,33 @@
+#!name=财新解锁（会员+正文+周刊）
+#!desc=财新 App 会员/正文/周刊解锁（script-response-body 响应改写）。正文权限接口 newValidate/validate 返回 data.info.power，power>0 即展开全文；正文以汉字隐写随页面下发，权限只是显示开关。只改响应不改请求。仅供学习交流。
+#!author=funit1858
+#!updateTime=2026-08-14
+
+scriptings:
+  - http_response:
+      name: 财新-会员+正文
+      script_url: >-
+        https://raw.githubusercontent.com/funit1858/egern-config/main/scripts/caixin.egern.js
+      match: >-
+        ^https?:\/\/(gateway\.caixin\.com\/api\/(app-api\/auth\/(newValidate|validate|validateAudioAuth)|purchase\/user\/getUserPowerArticlesV2)|mapiv5\.caixin\.com\/android\/user\/get_user_power|mappsv5\.caixin\.com\/articlev5\/.*\.html)
+      body_required: true
+      timeout: 10
+
+  - http_response:
+      name: 财新-周刊(独立App)
+      script_url: >-
+        https://raw.githubusercontent.com/funit1858/egern-config/main/scripts/caixin-weekly.egern.js
+      match: >-
+        ^https?:\/\/ipadcms\.caixin\.com\/(api|tmp|power)\/(articles?|myfree(v\d+)?)
+      body_required: true
+      timeout: 10
+
+mitm:
+  ca_p12: egern.p12
+  ca_passphrase: egern
+  hostnames:
+    includes:
+      - gateway.caixin.com
+      - mapiv5.caixin.com
+      - mappsv5.caixin.com
+      - ipadcms.caixin.com
