@@ -74,6 +74,14 @@ function unlock(data) {
     return;
   }
 
+  // 特殊键优先：用户权益(解锁) vs 功能权益(非付费)——任何接口都处理
+  if (data.appUserVipRightsApiDTO && typeof data.appUserVipRightsApiDTO === 'object') {
+    forceVipRights(data.appUserVipRightsApiDTO, true);
+  }
+  if (data.skuVipRightsApiDTO && typeof data.skuVipRightsApiDTO === 'object') {
+    forceVipRights(data.skuVipRightsApiDTO, false);
+  }
+
   // 内容解锁（v1.4 即有，v1.6 仍在使用）
   setF(data, 'isVip', true, 1);        // 会员标记（Boolean 或 Integer）
   setF(data, 'isHave', true, 1);       // 已拥有资源 → isHaveVideo=true → 全解锁
@@ -99,6 +107,7 @@ function unlock(data) {
   //   isRights=false        → isSkuFunction()=false → 非付费功能，直接可用
   //   isRightsAvailable=false → 权益无限制（双保险）
   setF(data, 'isRights', false, 0);
+  setF(data, 'resourceCount', 9999);   // 资源包数量拉满（我的页展示用）
   setF(data, 'isRightsAvailable', false, 0);
 
   // 有效期拉满（vipTime / svipTime / expireTime 字符串格式）
@@ -107,8 +116,9 @@ function unlock(data) {
   setF(data, 'expireTime', '2099-12-31 23:59:59');
   setF(data, 'vipExpireTime', '2099-12-31 23:59:59');
 
-  // 递归进入所有嵌套对象 / 数组
+  // 递归进入所有嵌套对象 / 数组（跳过已特殊处理的权益键）
   for (const key in data) {
+    if (key === 'appUserVipRightsApiDTO' || key === 'skuVipRightsApiDTO') continue;
     if (data[key] && typeof data[key] === 'object') unlock(data[key]);
   }
 }
@@ -142,7 +152,11 @@ function forceUnlockSku(data) {
     const item = list[i];
     if (!item || typeof item !== 'object') continue;
     if (item.skuVipRightsApiDTO) forceVipRights(item.skuVipRightsApiDTO, false);
-    if (item.appUserVipRightsApiDTO) forceVipRights(item.appUserVipRightsApiDTO, true);
+    // iOS 版可能不返回 appUserVipRightsApiDTO → 强制创建并解锁（用户持有权益）
+    if (!item.appUserVipRightsApiDTO || typeof item.appUserVipRightsApiDTO !== 'object') {
+      item.appUserVipRightsApiDTO = {};
+    }
+    forceVipRights(item.appUserVipRightsApiDTO, true);
   }
 }
 
@@ -156,7 +170,7 @@ function forceVipRights(v, isUser) {
 }
 
 
-/* 【调试】SKU 接口响应结构快照（仅 debug 版用） */
+/* 【调试】SKU 接口响应结构快照 */
 function summarizeSku(data) {
   try {
     const raw = data.data || data;
@@ -173,7 +187,5 @@ function summarizeSku(data) {
       );
     }
     return parts.join('\n').slice(0, 380);
-  } catch (e) {
-    return 'summarize err: ' + e.message;
-  }
+  } catch (e) { return 'err: ' + e.message; }
 }
