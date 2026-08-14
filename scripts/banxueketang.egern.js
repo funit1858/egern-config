@@ -141,7 +141,11 @@ function forceUnlockSku(data) {
     const item = list[i];
     if (!item || typeof item !== 'object') continue;
     if (item.skuVipRightsApiDTO) forceVipRights(item.skuVipRightsApiDTO, false);
-    if (item.appUserVipRightsApiDTO) forceVipRights(item.appUserVipRightsApiDTO, true);
+    // iOS 版可能不返回 appUserVipRightsApiDTO → 强制创建并解锁（用户持有权益）
+    if (!item.appUserVipRightsApiDTO || typeof item.appUserVipRightsApiDTO !== 'object') {
+      item.appUserVipRightsApiDTO = {};
+    }
+    forceVipRights(item.appUserVipRightsApiDTO, true);
   }
 }
 
