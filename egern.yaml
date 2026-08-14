@@ -509,4 +509,25 @@ mitm:
     - api.abema.io
     - '*.zhihu.com'
     - sub.store
+    - gateway.caixin.com
+    - mapiv5.caixin.com
+    - mappsv5.caixin.com
+    - ipadcms.caixin.com
     excludes: []
+
+# ── 财新解锁（响应改写，2026-08-14）──────────────────
+scriptings:
+  - http_response:
+      name: "财新会员+正文"
+      match: '^https?:\/\/(gateway\.caixin\.com\/api\/(app-api\/auth\/(newValidate|validate|validateAudioAuth)|purchase\/user\/getUserPowerArticlesV2)|mapiv5\.caixin\.com\/android\/user\/get_user_power|mappsv5\.caixin\.com\/articlev5\/.*\.html)'
+      script_url: "https://raw.githubusercontent.com/funit1858/egern-config/main/scripts/caixin.egern.js"
+      body_required: true
+      timeout: 10
+      update_interval: 60
+  - http_response:
+      name: "财新周刊"
+      match: '^https?:\/\/ipadcms\.caixin\.com\/(api|tmp|power)\/(articles?|myfree(v\d+)?)'
+      script_url: "https://raw.githubusercontent.com/funit1858/egern-config/main/scripts/caixin-weekly.egern.js"
+      body_required: true
+      timeout: 10
+      update_interval: 60
