@@ -51,6 +51,10 @@ try {
     var obj = JSON.parse(body);
     if (obj && typeof obj === 'object') {
         unlock(obj);
+        // 投屏等 SKU 权益接口（兼容安卓 IsRights / iOS UserIsRights）：强制注入权益解锁字段
+        if ($request && $request.url && $request.url.indexOf('getFunctionsSku') >= 0) {
+            forceUnlockSku(obj);
+        }
     }
     body = JSON.stringify(obj);
 } catch (e) {
