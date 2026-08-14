@@ -86,8 +86,6 @@ function unlock(data) {
   setF(data, 'isLock', false, 0);      // 单资源锁定标记
   setF(data, 'isSale', true, 1);       // 可购买标记
   setF(data, 'trialTopNum', 999);      // 试看条数拉满（列表本地解锁逻辑）
-  setF(data, 'originalPrice', 0);
-  setF(data, 'salePrice', 0);
 
   // 新版 VIP 状态判定（v1.6+ 核心）
   setF(data, 'memberCardCode', 'svip'); // "vip"=普通会员 "svip"=超级会员；如需普通会员标识可改 'vip'
