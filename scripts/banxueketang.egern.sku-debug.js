@@ -37,7 +37,7 @@ export default async function(ctx) {
       if (data && typeof data === 'object') {
         unlock(data);
         // 投屏等 SKU 权益接口：强制注入权益解锁字段（无论字段是否存在）
-        if (ctx.request.url.indexOf('getFunctionsSkuIsRights') >= 0) {
+        if (ctx.request.url.indexOf('getFunctionsSku') >= 0) {
           forceUnlockSku(data);
           // 【调试】输出 SKU 接口响应结构快照
           ctx.notify({ title: 'SKU接口响应', body: ctx.request.url.slice(0, 90) + '\n' + summarizeSku(data) });
