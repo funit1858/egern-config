@@ -23,8 +23,6 @@ scriptings:
       timeout: 10
 
 mitm:
-  ca_p12: egern.p12
-  ca_passphrase: egern
   hostnames:
     includes:
       - gateway.caixin.com
