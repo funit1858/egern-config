@@ -11,6 +11,7 @@ scriptings:
       match: >-
         ^https?:\/\/(gateway\.caixin\.com\/api\/(app-api\/auth\/(newValidate|validate|validateAudioAuth)|purchase\/user\/getUserPowerArticlesV2)|mapiv5\.caixin\.com\/android\/user\/get_user_power|mappsv5\.caixin\.com\/articlev5\/.*\.html)
       body_required: true
+      debug: true
       timeout: 10
 
   - http_response:
@@ -20,6 +21,7 @@ scriptings:
       match: >-
         ^https?:\/\/ipadcms\.caixin\.com\/(api|tmp|power)\/(articles?|myfree(v\d+)?)
       body_required: true
+      debug: true
       timeout: 10
 
 mitm:
@@ -29,3 +31,10 @@ mitm:
       - mapiv5.caixin.com
       - mappsv5.caixin.com
       - ipadcms.caixin.com
+
+# 抓包(调试用): 财新请求记录
+http_captures:
+  - gateway.caixin.com
+  - mapiv5.caixin.com
+  - mappsv5.caixin.com
+  - ipadcms.caixin.com
