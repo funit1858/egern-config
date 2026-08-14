@@ -1,28 +1,14 @@
-#!name=财新解锁（会员+正文+周刊）
-#!desc=财新 App 会员/正文/周刊解锁（script-response-body 响应改写）。正文权限接口 newValidate/validate 返回 data.info.power，power>0 即展开全文；正文以汉字隐写随页面下发，权限只是显示开关。只改响应不改请求。仅供学习交流。
+#!name=财新解锁
+#!desc=财新 App 会员/正文解锁（响应改写）。正文权限 newValidate 返回 data.info.power，power>0 展开全文。只改响应不改请求。仅供学习交流。
 #!author=funit1858
 #!updateTime=2026-08-14
 
 scriptings:
   - http_response:
-      name: 财新-会员+正文
-      script_url: >-
-        https://cdn.jsdelivr.net/gh/funit1858/egern-config@main/scripts/caixin.egern.js
-      match: >-
-        ^https?:\/\/(gateway\.caixin\.com\/api\/(app-api\/auth\/(newValidate|validate|validateAudioAuth)|purchase\/user\/getUserPowerArticlesV2)|mapiv5\.caixin\.com\/android\/user\/get_user_power|mappsv5\.caixin\.com\/articlev5\/.*\.html)
+      name: 财新解锁
+      match: (gateway|mappsv5|mapiv5)\.caixin\.com
+      script_url: https://cdn.jsdelivr.net/gh/funit1858/egern-config@main/scripts/caixin.egern.js
       body_required: true
-      debug: true
-      update_interval: 60
-      timeout: 10
-
-  - http_response:
-      name: 财新-周刊(独立App)
-      script_url: >-
-        https://cdn.jsdelivr.net/gh/funit1858/egern-config@main/scripts/caixin-weekly.egern.js
-      match: >-
-        ^https?:\/\/ipadcms\.caixin\.com\/(api|tmp|power)\/(articles?|myfree(v\d+)?)
-      body_required: true
-      debug: true
       update_interval: 60
       timeout: 10
 
@@ -32,11 +18,8 @@ mitm:
       - gateway.caixin.com
       - mapiv5.caixin.com
       - mappsv5.caixin.com
-      - ipadcms.caixin.com
 
-# 抓包(调试用): 财新请求记录
 http_captures:
   - gateway.caixin.com
   - mapiv5.caixin.com
   - mappsv5.caixin.com
-  - ipadcms.caixin.com
