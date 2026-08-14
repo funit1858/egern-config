@@ -72,6 +72,14 @@ function unlock(data) {
     return;
   }
 
+  // 特殊键优先：用户权益(解锁) vs 功能权益(非付费)——任何接口都处理
+  if (data.appUserVipRightsApiDTO && typeof data.appUserVipRightsApiDTO === 'object') {
+    forceVipRights(data.appUserVipRightsApiDTO, true);
+  }
+  if (data.skuVipRightsApiDTO && typeof data.skuVipRightsApiDTO === 'object') {
+    forceVipRights(data.skuVipRightsApiDTO, false);
+  }
+
   // 内容解锁（v1.4 即有，v1.6 仍在使用）
   setF(data, 'isVip', true, 1);        // 会员标记（Boolean 或 Integer）
   setF(data, 'isHave', true, 1);       // 已拥有资源 → isHaveVideo=true → 全解锁
@@ -106,8 +114,9 @@ function unlock(data) {
   setF(data, 'expireTime', '2099-12-31 23:59:59');
   setF(data, 'vipExpireTime', '2099-12-31 23:59:59');
 
-  // 递归进入所有嵌套对象 / 数组
+  // 递归进入所有嵌套对象 / 数组（跳过已特殊处理的权益键）
   for (const key in data) {
+    if (key === 'appUserVipRightsApiDTO' || key === 'skuVipRightsApiDTO') continue;
     if (data[key] && typeof data[key] === 'object') unlock(data[key]);
   }
 }
