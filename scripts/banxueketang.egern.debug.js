@@ -89,6 +89,13 @@ function unlock(data) {
   setF(data, 'notAnyVip', false, 0);    // 显式清除非会员标记
   setF(data, 'vipType', 'svip');
 
+  // SKU 权益解锁（投屏/字幕等 VIP 专属功能）
+  // 参考反编译：SkuRights.checkAvailable() 判定路径
+  //   isRights=false        → isSkuFunction()=false → 非付费功能，直接可用
+  //   isRightsAvailable=false → 权益无限制（双保险）
+  setF(data, 'isRights', false, 0);
+  setF(data, 'isRightsAvailable', false, 0);
+
   // 有效期拉满（vipTime / svipTime / expireTime 字符串格式）
   setF(data, 'vipTime', '2099-12-31 23:59:59');
   setF(data, 'svipTime', '2099-12-31 23:59:59');
