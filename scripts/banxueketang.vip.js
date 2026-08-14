@@ -131,3 +131,29 @@ function setF(obj, key, val, intVal) {
         obj[key] = val;
     }
 }
+
+/*
+ * SKU 权益接口（functions/product/getFunctionsSkuIsRights）专用强制解锁：
+ * 反编译自 FunctionSkuRightBean / SkuRights.checkAvailable()：
+ *   skuVipRightsApiDTO（功能权益要求）isRights=false → 非付费功能直接可用
+ *   appUserVipRightsApiDTO（用户权益）isRights=true → 用户持有权益（双保险）
+ */
+function forceUnlockSku(data) {
+    if (!data || typeof data !== 'object') return;
+    var list = (data.data && Array.isArray(data.data)) ? data.data : (Array.isArray(data) ? data : [data]);
+    for (var i = 0; i < list.length; i++) {
+        var item = list[i];
+        if (!item || typeof item !== 'object') continue;
+        if (item.skuVipRightsApiDTO) forceVipRights(item.skuVipRightsApiDTO, false);
+        if (item.appUserVipRightsApiDTO) forceVipRights(item.appUserVipRightsApiDTO, true);
+    }
+}
+
+function forceVipRights(v, isUser) {
+    if (!v || typeof v !== 'object') return;
+    v.isRights = isUser ? true : false;
+    v.isRightsAvailable = false;
+    v.vipStatus = 2;
+    v.memberCardCode = v.memberCardCode || 'svip';
+    v.isVip = (typeof v.isVip === 'number') ? 1 : true;
+}
