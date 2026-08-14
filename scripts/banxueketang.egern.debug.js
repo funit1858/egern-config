@@ -37,6 +37,10 @@ export default async function(ctx) {
       const data = JSON.parse(text);
       if (data && typeof data === 'object') {
         unlock(data);
+        // 投屏等 SKU 权益接口：强制注入权益解锁字段（无论字段是否存在）
+        if (ctx.request.url.indexOf('getFunctionsSkuIsRights') >= 0) {
+          forceUnlockSku(data);
+        }
         return { body: data }; // Egern 自动 JSON 序列化
       }
     } catch (e) {
@@ -121,4 +125,31 @@ function setF(obj, key, val, intVal) {
   } else {
     obj[key] = val;
   }
+}
+
+/*
+ * SKU 权益接口（functions/product/getFunctionsSkuIsRights）专用强制解锁：
+ * 反编译自 FunctionSkuRightBean / SkuRights.checkAvailable()：
+ *   skuVipRightsApiDTO（功能权益要求）isRights=false → 非付费功能直接可用
+ *   appUserVipRightsApiDTO（用户权益）isRights=true → 用户持有权益（双保险）
+ * isRights / isRightsAvailable 是 VipRightsInfo 模型标准字段，强制写入安全。
+ */
+function forceUnlockSku(data) {
+  if (!data || typeof data !== 'object') return;
+  const list = (data.data && Array.isArray(data.data)) ? data.data : (Array.isArray(data) ? data : [data]);
+  for (let i = 0; i < list.length; i++) {
+    const item = list[i];
+    if (!item || typeof item !== 'object') continue;
+    if (item.skuVipRightsApiDTO) forceVipRights(item.skuVipRightsApiDTO, false);
+    if (item.appUserVipRightsApiDTO) forceVipRights(item.appUserVipRightsApiDTO, true);
+  }
+}
+
+function forceVipRights(v, isUser) {
+  if (!v || typeof v !== 'object') return;
+  v.isRights = isUser ? true : false;
+  v.isRightsAvailable = false;
+  v.vipStatus = 2;
+  v.memberCardCode = v.memberCardCode || 'svip';
+  v.isVip = (typeof v.isVip === 'number') ? 1 : true;
 }
