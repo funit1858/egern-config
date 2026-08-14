@@ -42,7 +42,7 @@ export default async function (ctx) {
   function unlock() {
     var sourceId = (document.getElementById('source_id') || {}).value;
     if (!UID || !CODE || !sourceId) return;
-    fetch('/api/app-api/userAuth/checkUserAndLoginRead?uid=' + encodeURIComponent(UID) + '&code=' + encodeURIComponent(CODE) + '&unit=1&deviceType=1&sourceId=' + sourceId, {credentials: 'include'})
+    fetch('//gateway.caixin.com/api/app-api/userAuth/checkUserAndLoginRead?uid=' + encodeURIComponent(UID) + '&code=' + encodeURIComponent(CODE) + '&unit=1&deviceType=1&sourceId=' + sourceId, {credentials: 'include'})
       .then(function(r) { return r.json(); })
       .then(function(d) {
         if (d && d.code === 0 && d.data && d.data.articleProperties && d.data.articleProperties.content) {
