@@ -1,29 +1,29 @@
 name: 财新解锁
-description: 财新 App 会员/正文解锁。newValidate 返回 data.info.power，power>0 展开全文；articlev5 HTML 中 isFree/need_login 翻转。只改响应不改请求。仅供学习交流。
+description: 财新 App 会员/正文解锁。v8 方案：articlev5 页面注入 JS 调用明文 checkUserAndLoginRead 接口获取全文。只改响应不改请求。仅供学习交流。
 author: funit1858
 homepage: https://github.com/funit1858/egern-config
 
 body_rewrites:
-  - match: (gateway|mappsv5|mapiv5)\.caixin\.com
-    find: '<title>'
-    replace: '<title>[UNLOCKED] '
-    type: response
-  - match: gateway\.caixin\.com
-    find: '"power":0'
-    replace: '"power":1'
-    type: response
-  - match: gateway\.caixin\.com
-    find: '"errorCode":7'
-    replace: '"errorCode":0'
-    type: response
-  - match: mappsv5\.caixin\.com
-    find: '"isFree":1'
-    replace: '"isFree":0'
-    type: response
-  - match: mappsv5\.caixin\.com
-    find: '"need_login":1'
-    replace: '"need_login":0'
-    type: response
+  - response_regex:
+      match: mappsv5\.caixin\.com
+      find: '<title>'
+      replace: '<title>[UNLOCKED] '
+  - response_regex:
+      match: gateway\.caixin\.com
+      find: '"power":0'
+      replace: '"power":1'
+  - response_regex:
+      match: gateway\.caixin\.com
+      find: '"errorCode":7'
+      replace: '"errorCode":0'
+  - response_regex:
+      match: mappsv5\.caixin\.com
+      find: '"isFree":1'
+      replace: '"isFree":0'
+  - response_regex:
+      match: mappsv5\.caixin\.com
+      find: '"need_login":1'
+      replace: '"need_login":0'
 
 scriptings:
   - http_response:
