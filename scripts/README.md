@@ -1,27 +1,41 @@
 # 伴学课堂 VIP 解锁脚本
 
-针对伴学课堂（banxueketang.com）App 的会员/VIP 功能解锁脚本，基于对 Android v1.6.6（内部版本 1.6.82）APK 反编译分析编写。
+针对伴学课堂（banxueketang.com）App 的会员/VIP 功能解锁脚本。基于对 Android v1.6.6（内部 1.6.82）APK 反编译 + iOS 版真实接口抓包分析编写。
 
-## 脚本列表
+## 脚本列表（正式版）
 
 | 文件 | 适用工具 | 说明 |
 |---|---|---|
-| `banxueketang.vip.js` | QuantumultX / Surge / Loon / Shadowrocket | 标准版（`$response`/`$done` API） |
-| `banxueketang.egern.js` | Egern | 标准版（`ctx` API，无通知） |
-| `banxueketang.egern.debug.js` | Egern | 调试版：脚本触发时弹通知（显示请求 URL） |
-| `banxueketang.egern.sku-debug.js` | Egern | SKU 调试版：输出投屏等权益接口的响应结构快照 |
+| `banxueketang.egern.js` | Egern | iOS 主用版本（ctx API） |
+| `banxueketang.vip.js` | QuantumultX / Surge / Loon / Shadowrocket | 标准版本（$response/$done API） |
 
-## 解锁能力
+> 调试脚本已清理，正式版即最新逻辑。
 
-- ✅ 课程/视频/音频列表解锁（`isLock` / `isHave` / `trialTopNum`）
-- ✅ VIP/SVIP 状态（`isVip` / `memberCardCode` / `vipStatus` / `isUpSVip`）
-- ✅ 有效期拉满（`vipTime` / `svipTime` / `expireTime`）
-- ✅ SKU 权益功能（投屏等，`isRights` / `isRightsAvailable`）
-- ⚠️ 投屏等"用户权益"功能**需要登录态**：未登录时 App 不请求权益接口，脚本无法改写
+## 解锁能力（完整清单）
+
+- ✅ 课程/视频/音频/书籍列表解锁（`isLock` / `isHave` / `trialTopNum`）
+- ✅ VIP/SVIP 身份（`isVip` / `memberCardCode` / `vipStatus` / `isUpSVip` / `notAnyVip`）
+- ✅ 会员有效期拉满（`vipTime` / `svipTime` / `expireTime`）
+- ✅ 全部 SKU 权益功能：投屏 / 同步课程 / 音频字幕 / 音频设置 / 在线听写 / 手写听写 / 点读跟读 / 古诗背诵 / 练习打印 / 导出错题本 / 会员卡
+- ✅ 资源包数量（`resourceCount`）
+- ⚠️ 周卡/月卡领取等**服务端硬校验**无法通过改写实现
+
+## 关键修复记录（投屏问题的完整链路）
+
+1. **安卓/iOS 接口名差异**：安卓 `getFunctionsSkuIsRights`，iOS 多 `User` → `getFunctionsSkuUserIsRights`。匹配逻辑用 `getFunctionsSku` 前缀兼容两者。
+2. **iOS 响应结构差异**：iOS 版 SKU 接口不返回 `appUserVipRightsApiDTO`（用户权益字段缺失）→ 脚本强制注入。
+3. **真正的数据源**：iOS 版播放页权益数据来自 **`selectSyncCourseInfo`**（同步课程信息）接口，同时返回：
+   - `data.isVip`（会员状态）
+   - `appUserVipRightsApiDTO.isRights`（用户权益）← 投屏判定关键
+   - `skuVipRightsApiDTO.isRights`（功能要求）
+4. **最终修复**：`unlock()` 对**任何接口**识别特殊键并强制改写：
+   - `appUserVipRightsApiDTO` → `isRights:true`、`vipStatus:2`、`memberCardCode:"svip"`（用户持有权益）
+   - `skuVipRightsApiDTO` → `isRights:false`（功能非付费）
+   - 顶层 `isVip` → `true`
 
 ## 配置方法
 
-### Egern
+### Egern（推荐 iOS）
 
 ```yaml
 scriptings:
@@ -33,14 +47,12 @@ scriptings:
       timeout: 10
 
 mitm:
-  ca_p12: ""            # 按实际填写
-  ca_passphrase: ""     # 按实际填写
   hostnames:
     includes:
       - "api.banxueketang.com"
 ```
 
-注意：`body_required` 必须为 `true`；需安装并信任 CA 证书。
+注意：`body_required` 必须为 `true`；需安装并信任 CA 证书（设置 → 通用 → 关于本机 → 证书信任设置）。
 
 ### Quantumult X
 
@@ -52,20 +64,15 @@ mitm:
 hostname = api.banxueketang.com
 ```
 
+完整基础配置见根目录 `QuantumultX_simple.conf`（含节点/分流/去广告/伴学课堂，可直接导入）。
+
 ## 使用流程
 
 1. 开启代理工具（VPN 状态）
-2. 安装并信任 CA 证书（设置 → 通用 → 关于本机 → 证书信任设置）
+2. 安装并信任 CA 证书
 3. 确认 MITM hostname 包含 `api.banxueketang.com`
 4. 打开伴学课堂 → 退出登录 → 重新登录（清除旧缓存）
 5. 无效时点一次「恢复购买」
-
-## 更新记录
-
-- **v1**：基于 @liul0ng 原版 bxkt.js 增强（深度递归解锁 + 类型兼容）
-- **v2**：适配 v1.6+ 新版 VIP 判定字段（`memberCardCode` / `vipStatus` / `isUpSVip` / `notAnyVip` 等）
-- **v3**：SKU 权益解锁（`isRights` / `isRightsAvailable`）—— 投屏等 VIP 专属功能
-- **v3.1**：投屏 SKU 接口（`functions/product/getFunctionsSkuIsRights`）强制注入解锁
 
 ## 免责声明
 
