@@ -98,6 +98,7 @@ function unlock(data) {
   //   isRights=false        → isSkuFunction()=false → 非付费功能，直接可用
   //   isRightsAvailable=false → 权益无限制（双保险）
   setF(data, 'isRights', false, 0);
+  setF(data, 'resourceCount', 9999);   // 资源包数量拉满（我的页展示用）
   setF(data, 'isRightsAvailable', false, 0);
 
   // 有效期拉满（vipTime / svipTime / expireTime 字符串格式）
