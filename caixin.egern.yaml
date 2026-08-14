@@ -7,7 +7,7 @@ scriptings:
   - http_response:
       name: 财新-会员+正文
       script_url: >-
-        https://raw.githubusercontent.com/funit1858/egern-config/main/scripts/caixin.egern.js
+        https://cdn.jsdelivr.net/gh/funit1858/egern-config@main/scripts/caixin.egern.js
       match: >-
         ^https?:\/\/(gateway\.caixin\.com\/api\/(app-api\/auth\/(newValidate|validate|validateAudioAuth)|purchase\/user\/getUserPowerArticlesV2)|mapiv5\.caixin\.com\/android\/user\/get_user_power|mappsv5\.caixin\.com\/articlev5\/.*\.html)
       body_required: true
@@ -18,7 +18,7 @@ scriptings:
   - http_response:
       name: 财新-周刊(独立App)
       script_url: >-
-        https://raw.githubusercontent.com/funit1858/egern-config/main/scripts/caixin-weekly.egern.js
+        https://cdn.jsdelivr.net/gh/funit1858/egern-config@main/scripts/caixin-weekly.egern.js
       match: >-
         ^https?:\/\/ipadcms\.caixin\.com\/(api|tmp|power)\/(articles?|myfree(v\d+)?)
       body_required: true
