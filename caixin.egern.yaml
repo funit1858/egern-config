@@ -1,7 +1,7 @@
-#!name=财新解锁
-#!desc=财新 App 会员/正文解锁。newValidate 返回 data.info.power，power>0 展开全文；articlev5 HTML 中 isFree/need_login 翻转。只改响应不改请求。仅供学习交流。
-#!author=funit1858
-#!updateTime=2026-08-14
+name: 财新解锁
+description: 财新 App 会员/正文解锁。newValidate 返回 data.info.power，power>0 展开全文；articlev5 HTML 中 isFree/need_login 翻转。只改响应不改请求。仅供学习交流。
+author: funit1858
+homepage: https://github.com/funit1858/egern-config
 
 body_rewrites:
   - match: (gateway|mappsv5|mapiv5)\.caixin\.com
