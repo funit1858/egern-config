@@ -1,0 +1,7 @@
+name: 财新MITM
+description: 仅MITM测试
+
+mitm:
+  hostnames:
+    - gateway.caixin.com
+    - mappsv5.caixin.com
