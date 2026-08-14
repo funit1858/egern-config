@@ -38,7 +38,7 @@ export default async function(ctx) {
       if (data && typeof data === 'object') {
         unlock(data);
         // 投屏等 SKU 权益接口：强制注入权益解锁字段（无论字段是否存在）
-        if (ctx.request.url.indexOf('getFunctionsSkuIsRights') >= 0) {
+        if (ctx.request.url.indexOf('getFunctionsSku') >= 0) {
           forceUnlockSku(data);
         }
         return { body: data }; // Egern 自动 JSON 序列化
