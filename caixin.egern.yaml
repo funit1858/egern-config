@@ -1,5 +1,5 @@
 name: 财新解锁
-description: 财新 App 会员/正文解锁。articlev5 注入 JS 调 checkUserAndLoginRead 取全文；file.caixin.cn 重写到 .com 避免资源加载超时。仅供学习交流。
+description: 财新 App 会员/正文解锁。articlev5 注入 JS 取全文 + newValidate 伪装成功(消除前端 checkAuth 报错提示)。仅供学习交流。
 author: funit1858
 homepage: https://github.com/funit1858/egern-config
 
@@ -7,6 +7,13 @@ url_rewrites:
   - match: "^https://file\\.caixin\\.cn/"
     location: "https://file.caixin.com/"
     status_code: 307
+
+map_locals:
+  - match: "^https://gateway\\.caixin\\.com/api/app-api/auth/newValidate$"
+    status_code: 200
+    headers:
+      Content-Type: application/json
+    body: '{"code":0,"data":{"info":{"power":1,"errorCode":0,"tipsMsg":"","redmsg":""}}}'
 
 body_rewrites:
   - response_regex:
@@ -26,6 +33,8 @@ scriptings:
 mitm:
   hostnames:
     - mappsv5.caixin.com
+    - gateway.caixin.com
 
 http_captures:
   - mappsv5.caixin.com
+  - gateway.caixin.com
