@@ -34,7 +34,9 @@ mitm:
   hostnames:
     - mappsv5.caixin.com
     - gateway.caixin.com
+    - file.caixin.cn
 
 http_captures:
   - mappsv5.caixin.com
   - gateway.caixin.com
+  - file.caixin.cn
