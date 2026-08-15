@@ -1,12 +1,12 @@
 name: 财新解锁
-description: 财新 App 会员/正文解锁。articlev5 注入 JS 调 checkUserAndLoginRead 取全文；file.caixin.cn 直连避免资源加载失败。仅供学习交流。
+description: 财新 App 会员/正文解锁。articlev5 注入 JS 调 checkUserAndLoginRead 取全文；file.caixin.cn 重写到 .com 避免资源加载超时。仅供学习交流。
 author: funit1858
 homepage: https://github.com/funit1858/egern-config
 
-rules:
-  - domain_suffix:
-      match: file.caixin.cn
-      policy: DIRECT
+url_rewrites:
+  - match: "^https://file\\.caixin\\.cn/"
+    location: "https://file.caixin.com/"
+    status_code: 307
 
 body_rewrites:
   - response_regex:
