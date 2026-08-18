@@ -39,10 +39,16 @@ export default async function(ctx) {
         try {
           const urls = [];
           collectUrls(data, urls, 0);
-          if (urls.length) {
-            const uniq = Array.from(new Set(urls)).filter(u => /^https?:/.test(u));
-            if (uniq.length) {
-              ctx.notify({ title: '📥 视频地址(' + uniq.length + ')', body: uniq.join('\n').slice(0, 300) });
+          const ids = Array.from(new Set(
+            urls.filter(u => /^https?:/.test(u))
+                .map(u => { const m = u.match(/\/([a-zA-Z0-9]+)\.(mp4|m3u8|ts)$/); return m ? m[1] : null; })
+                .filter(Boolean)
+          ));
+          if (ids.length) {
+            // 每条通知 ~14 个 ID（避免 iOS 截断）
+            for (let i = 0; i < ids.length; i += 14) {
+              const chunk = ids.slice(i, i + 14);
+              ctx.notify({ title: '📥 视频ID(第' + Math.floor(i/14+1) + '批/共' + Math.ceil(ids.length/14) + '批 合计' + ids.length + ')', body: chunk.join('\n') });
             }
           }
         } catch (e) {}
