@@ -47,12 +47,12 @@ export default async function(ctx) {
           }
           if (uniq.length) {
             // 每条通知 ~4 个 "章节|序号.ID 名称"
-            for (let i = 0; i < uniq.length; i += 4) {
-              const chunk = uniq.slice(i, i + 4);
+            for (let i = 0; i < uniq.length; i += 3) {
+              const chunk = uniq.slice(i, i + 3);
               const lines = chunk.map((it, j) => {
                 const n = i + j + 1;
-                const sec = (it.section || '').slice(0, 8);
-                const name = (it.name || '视频' + n).slice(0, 10);
+                const sec = (it.section || '').slice(0, 12);
+                const name = (it.name || '视频' + n).slice(0, 24);
                 return (sec ? sec + ' | ' : '') + n + '.' + it.id.slice(-6) + ' ' + name;
               });
               ctx.notify({ title: '📥 课时(' + (i+1) + '-' + (i+chunk.length) + '/' + uniq.length + ')', body: lines.join('\n') });
