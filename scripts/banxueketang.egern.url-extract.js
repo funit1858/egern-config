@@ -37,18 +37,24 @@ export default async function(ctx) {
       if (data && typeof data === 'object') {
         // 【地址提取】深度收集 materialPath / materialOriginUrl
         try {
-          const urls = [];
-          collectUrls(data, urls, 0);
-          const ids = Array.from(new Set(
-            urls.filter(u => /^https?:/.test(u))
-                .map(u => { const m = u.match(/\/([a-zA-Z0-9]+)\.(mp4|m3u8|ts)$/); return m ? m[1] : null; })
-                .filter(Boolean)
-          ));
-          if (ids.length) {
-            // 每条通知 ~14 个 ID（避免 iOS 截断）
-            for (let i = 0; i < ids.length; i += 14) {
-              const chunk = ids.slice(i, i + 14);
-              ctx.notify({ title: '📥 视频ID(第' + Math.floor(i/14+1) + '批/共' + Math.ceil(ids.length/14) + '批 合计' + ids.length + ')', body: chunk.join('\n') });
+          const items = [];   // [{id, name}]
+          collectItems(data, items, 0);
+          // 按 ID 去重，保序
+          const seen = {};
+          const uniq = [];
+          for (const it of items) {
+            if (it.id && !seen[it.id]) { seen[it.id] = 1; uniq.push(it); }
+          }
+          if (uniq.length) {
+            // 每条通知 ~6 个 "序号.ID 名称"（带名称，注意长度）
+            for (let i = 0; i < uniq.length; i += 6) {
+              const chunk = uniq.slice(i, i + 6);
+              const lines = chunk.map((it, j) => {
+                const n = i + j + 1;
+                const name = (it.name || '视频' + n).slice(0, 16);
+                return n + '.' + it.id.slice(-6) + ' ' + name;
+              });
+              ctx.notify({ title: '📥 课时(' + (i+1) + '-' + (i+chunk.length) + '/' + uniq.length + ')', body: lines.join('\n') });
             }
           }
         } catch (e) {}
@@ -183,18 +189,23 @@ function forceVipRights(v, isUser) {
 }
 
 
-/* 【地址提取】深度遍历收集播放地址 */
-function collectUrls(obj, out, depth) {
+/* 【课时提取】收集 ID + 课时名称 */
+function collectItems(obj, out, depth) {
   if (!obj || typeof obj !== 'object' || depth > 6) return;
   if (Object.prototype.toString.call(obj) === '[object Array]') {
-    for (let i = 0; i < obj.length; i++) collectUrls(obj[i], out, depth + 1);
+    for (let i = 0; i < obj.length; i++) collectItems(obj[i], out, depth + 1);
     return;
   }
   for (const k in obj) {
     const v = obj[k];
     if ((k === 'materialPath' || k === 'materialOriginUrl' || k === 'materialUrl') && typeof v === 'string' && v.length > 10) {
-      out.push(v);
+      const m = v.match(/\/([a-zA-Z0-9]+)\.(mp4|m3u8|ts)$/);
+      if (m) {
+        // 从同对象找课时名称
+        const name = obj.materialName || obj.businessName || obj.appMaterialName || obj.libraryName || obj.name || obj.contentName || '';
+        out.push({ id: m[1], name: String(name) });
+      }
     }
-    if (v && typeof v === 'object') collectUrls(v, out, depth + 1);
+    if (v && typeof v === 'object') collectItems(v, out, depth + 1);
   }
 }
