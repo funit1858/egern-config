@@ -37,8 +37,8 @@ export default async function(ctx) {
       if (data && typeof data === 'object') {
         // 【地址提取】深度收集 materialPath / materialOriginUrl
         try {
-          const items = [];   // [{id, name}]
-          collectItems(data, items, 0);
+          const items = [];   // [{id, name, section}]
+          collectItems(data, items, 0, '');
           // 按 ID 去重，保序
           const seen = {};
           const uniq = [];
@@ -46,13 +46,14 @@ export default async function(ctx) {
             if (it.id && !seen[it.id]) { seen[it.id] = 1; uniq.push(it); }
           }
           if (uniq.length) {
-            // 每条通知 ~6 个 "序号.ID 名称"（带名称，注意长度）
-            for (let i = 0; i < uniq.length; i += 6) {
-              const chunk = uniq.slice(i, i + 6);
+            // 每条通知 ~4 个 "章节|序号.ID 名称"
+            for (let i = 0; i < uniq.length; i += 4) {
+              const chunk = uniq.slice(i, i + 4);
               const lines = chunk.map((it, j) => {
                 const n = i + j + 1;
-                const name = (it.name || '视频' + n).slice(0, 16);
-                return n + '.' + it.id.slice(-6) + ' ' + name;
+                const sec = (it.section || '').slice(0, 8);
+                const name = (it.name || '视频' + n).slice(0, 10);
+                return (sec ? sec + ' | ' : '') + n + '.' + it.id.slice(-6) + ' ' + name;
               });
               ctx.notify({ title: '📥 课时(' + (i+1) + '-' + (i+chunk.length) + '/' + uniq.length + ')', body: lines.join('\n') });
             }
@@ -190,10 +191,11 @@ function forceVipRights(v, isUser) {
 
 
 /* 【课时提取】收集 ID + 课时名称 */
-function collectItems(obj, out, depth) {
+function collectItems(obj, out, depth, section) {
   if (!obj || typeof obj !== 'object' || depth > 6) return;
+  const cur = obj.courseName || obj.chapterName || obj.sectionName || obj.tabName || section || '';
   if (Object.prototype.toString.call(obj) === '[object Array]') {
-    for (let i = 0; i < obj.length; i++) collectItems(obj[i], out, depth + 1);
+    for (let i = 0; i < obj.length; i++) collectItems(obj[i], out, depth + 1, cur);
     return;
   }
   for (const k in obj) {
@@ -201,11 +203,10 @@ function collectItems(obj, out, depth) {
     if ((k === 'materialPath' || k === 'materialOriginUrl' || k === 'materialUrl') && typeof v === 'string' && v.length > 10) {
       const m = v.match(/\/([a-zA-Z0-9]+)\.(mp4|m3u8|ts)$/);
       if (m) {
-        // 从同对象找课时名称
         const name = obj.materialName || obj.businessName || obj.appMaterialName || obj.libraryName || obj.name || obj.contentName || '';
-        out.push({ id: m[1], name: String(name) });
+        out.push({ id: m[1], name: String(name), section: cur || obj.chapterTitle || '' });
       }
     }
-    if (v && typeof v === 'object') collectItems(v, out, depth + 1);
+    if (v && typeof v === 'object') collectItems(v, out, depth + 1, cur);
   }
 }
