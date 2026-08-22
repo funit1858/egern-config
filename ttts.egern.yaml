@@ -1,0 +1,47 @@
+# 天天跳绳去广告 - Egern 模块
+# 用法：
+#   1. 把 ttts_noad.js 放到可访问的 URL（或 iCloud/Egern 本地脚本目录）
+#   2. Egern 配置中合并本段 scriptings，并确认 MITM 主机名包含 api.tiantiantiaosheng.com
+#
+# 注意：Egern 需要安装并信任其 CA 证书（设置→通用→关于本机→证书信任设置 中启用）
+
+scriptings:
+  # 核心：改写广告总开关配置（开屏/热启/插屏/信息流全由它控制）
+  - http_response:
+      name: TTTS-AdsConfig
+      match: ^https:\/\/api\.tiantiantiaosheng\.com\/api2\/abtest\/ads_v2
+      script_url: https://raw.githubusercontent.com/funit1858/egern-config/main/scripts/ttts.egern.js   # ← 换成你的 js 地址
+      body_required: true
+      timeout: 30
+
+  # 辅助：内页广告配置直接返回空对象
+  - http_response:
+      name: TTTS-InnerAdConfig
+      match: ^https:\/\/api\.tiantiantiaosheng\.com\/api2\/ad_sys\/inner_ad_config
+      script_url: https://raw.githubusercontent.com/funit1858/egern-config/main/scripts/ttts-empty.egern.js  # 见下方说明
+      body_required: true
+      timeout: 30
+
+  # 辅助：作业内页广告配置返回空对象
+  - http_response:
+      name: TTTS-HomeworkAdConfig
+      match: ^https:\/\/api\.tiantiantiaosheng\.com\/api2\/ad_sys\/homework_inner_ad_config
+      script_url: https://raw.githubusercontent.com/funit1858/egern-config/main/scripts/ttts-empty.egern.js
+      body_required: true
+      timeout: 30
+
+# 可选第二层：直接拒掉聚合广告 SDK 的请求域名（即使配置漏网也加载不出素材）
+# 在 rules 里加（REJECT 只断请求，不影响激励视频的奖励上报，因为奖励走自家 API）：
+#
+# rules:
+#   - domain_suffix: pangle.io            → REJECT   # 穿山甲
+#   - domain_suffix: pangolin-sdk-toutiao.com → REJECT
+#   - domain_suffix: csjadapi.com         → REJECT
+#   - domain_suffix: windmill.com.cn      → REJECT   # TOBid/WindMill
+#   - domain_suffix: beizi-ad.com         → REJECT   # 倍孜
+#   - domain_suffix: bayescom.com         → REJECT
+#   - domain_suffix: meishuads.com        → REJECT   # 美数
+#   - domain_suffix: mi.gdt.qq.com        → REJECT   # 广点通
+#
+# ⚠️ 不要 REJECT api.tiantiantiaosheng.com 本身！
+#    ad_screenshot_sign、video_energy_bean/receive_reward 等奖励上报都走这个域名。
