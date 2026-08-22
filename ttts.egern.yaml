@@ -14,7 +14,7 @@ scriptings:
       body_required: true
       timeout: 30
 
-  # 辅助：内页广告配置直接返回空对象
+  ─ 内页广告配置 → 空 ──
   - http_response:
       name: TTTS-InnerAdConfig
       match: ^https:\/\/api\.tiantiantiaosheng\.com\/api2\/ad_sys\/inner_ad_config
@@ -45,3 +45,28 @@ scriptings:
 #
 # ⚠️ 不要 REJECT api.tiantiantiaosheng.com 本身！
 #    ad_screenshot_sign、video_energy_bean/receive_reward 等奖励上报都走这个域名。
+
+  # ── 激励视频相关：隐藏"看视频领奖励"全部入口 ──
+  # 能量豆奖励配置 → 空（视频翻倍/领豆入口不再出现）
+  - http_response:
+      name: TTTS-RewardConfig
+      match: ^https:\/\/api\.tiantiantiaosheng\.com\/api2\/video_energy_bean\/reward_config
+      script_url: https://raw.githubusercontent.com/funit1858/egern-config/main/scripts/ttts-empty.egern.js
+      body_required: true
+      timeout: 30
+
+  # 首页/活动弹窗列表 → 空
+  - http_response:
+      name: TTTS-PopupList
+      match: ^https:\/\/api\.tiantiantiaosheng\.com\/api2\/popup\/list
+      script_url: https://raw.githubusercontent.com/funit1858/egern-config/main/scripts/ttts-empty.egern.js
+      body_required: true
+      timeout: 30
+
+  # 签到福利任务(看视频领奖)状态 → 空
+  - http_response:
+      name: TTTS-DailyWelfare
+      match: ^https:\/\/api\.tiantiantiaosheng\.com\/api2\/ad_sys\/signin_welfare_task\/status
+      script_url: https://raw.githubusercontent.com/funit1858/egern-config/main/scripts/ttts-empty.egern.js
+      body_required: true
+      timeout: 30
